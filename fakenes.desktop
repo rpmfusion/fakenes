@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Fakenes
+Comment=Nintendo Entertainment System emulator
+Exec=fakenes
+Icon=fakenes.png
+Terminal=false
+Type=Application
+Categories=Game;Emulator;

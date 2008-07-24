@@ -1,0 +1,190 @@
+--- fakenes-0.5.8/src/gui.c.driver	2006-04-26 15:20:24.000000000 +0200
++++ fakenes-0.5.8/src/gui.c	2006-08-11 22:30:57.000000000 +0200
+@@ -237,55 +237,58 @@
+    TOGGLE_MENU_ITEM(audio_channels_menu_extended_2,    dsp_get_channel_enabled (APU_CHANNEL_EXTRA_2));
+    TOGGLE_MENU_ITEM(audio_channels_menu_extended_3,    dsp_get_channel_enabled (APU_CHANNEL_EXTRA_3));
+ 
++   TOGGLE_MENU_ITEM(video_driver_menu_automatic, (menu_video_driver == GFX_AUTODETECT));
++
+ #ifdef ALLEGRO_DOS
+ 
+-   TOGGLE_MENU_ITEM(video_driver_dos_menu_vga,           (gfx_driver->id == GFX_VGA));
+-   TOGGLE_MENU_ITEM(video_driver_dos_menu_vga_mode_x,    (gfx_driver->id == GFX_MODEX));
+-   TOGGLE_MENU_ITEM(video_driver_dos_menu_vesa,          (gfx_driver->id == GFX_VESA1));
+-   TOGGLE_MENU_ITEM(video_driver_dos_menu_vesa_2_banked, (gfx_driver->id == GFX_VESA2B));
+-   TOGGLE_MENU_ITEM(video_driver_dos_menu_vesa_2_linear, (gfx_driver->id == GFX_VESA2L));
+-   TOGGLE_MENU_ITEM(video_driver_dos_menu_vesa_3,        (gfx_driver->id == GFX_VESA3));
+-   TOGGLE_MENU_ITEM(video_driver_dos_menu_vesa_vbe_af,   (gfx_driver->id == GFX_VBEAF));
++   TOGGLE_MENU_ITEM(video_driver_dos_menu_vga,           (menu_video_driver == GFX_VGA));
++   TOGGLE_MENU_ITEM(video_driver_dos_menu_vga_mode_x,    (menu_video_driver == GFX_MODEX));
++   TOGGLE_MENU_ITEM(video_driver_dos_menu_vesa,          (menu_video_driver == GFX_VESA1));
++   TOGGLE_MENU_ITEM(video_driver_dos_menu_vesa_2_banked, (menu_video_driver == GFX_VESA2B));
++   TOGGLE_MENU_ITEM(video_driver_dos_menu_vesa_2_linear, (menu_video_driver == GFX_VESA2L));
++   TOGGLE_MENU_ITEM(video_driver_dos_menu_vesa_3,        (menu_video_driver == GFX_VESA3));
++   TOGGLE_MENU_ITEM(video_driver_dos_menu_vesa_vbe_af,   (menu_video_driver == GFX_VBEAF));
+ 
+ #endif   /* ALLEGRO_DOS */
+ 
+ #ifdef ALLEGRO_WINDOWS
+ 
+-   TOGGLE_MENU_ITEM(video_driver_windows_menu_directx,         (gfx_driver->id == GFX_DIRECTX));
+-   TOGGLE_MENU_ITEM(video_driver_windows_menu_directx_window,  (gfx_driver->id == GFX_DIRECTX_WIN));
+-   TOGGLE_MENU_ITEM(video_driver_windows_menu_directx_overlay, (gfx_driver->id == GFX_DIRECTX_OVL));
+-   TOGGLE_MENU_ITEM(video_driver_windows_menu_gdi,             (gfx_driver->id == GFX_GDI));
++   TOGGLE_MENU_ITEM(video_driver_windows_menu_directx,         (menu_video_driver == GFX_DIRECTX));
++   TOGGLE_MENU_ITEM(video_driver_windows_menu_directx_window,  (menu_video_driver == GFX_DIRECTX_WIN));
++   TOGGLE_MENU_ITEM(video_driver_windows_menu_directx_overlay, (menu_video_driver == GFX_DIRECTX_OVL));
++   TOGGLE_MENU_ITEM(video_driver_windows_menu_gdi,             (menu_video_driver == GFX_GDI));
+ 
+ #endif   /* ALLEGRO_WINDOWS */
+ 
+ #ifdef ALLEGRO_LINUX
+ 
+-   TOGGLE_MENU_ITEM(video_driver_linux_menu_vga,         (gfx_driver->id == GFX_VGA));
+-   TOGGLE_MENU_ITEM(video_driver_linux_menu_vga_mode_x,  (gfx_driver->id == GFX_MODEX));
+-   TOGGLE_MENU_ITEM(video_driver_linux_menu_vesa_vbe_af, (gfx_driver->id == GFX_VBEAF));
++   TOGGLE_MENU_ITEM(video_driver_linux_menu_vga,         (menu_video_driver == GFX_VGA));
++   TOGGLE_MENU_ITEM(video_driver_linux_menu_vga_mode_x,  (menu_video_driver == GFX_MODEX));
++   TOGGLE_MENU_ITEM(video_driver_linux_menu_vesa_vbe_af, (menu_video_driver == GFX_VBEAF));
+ #ifdef GFX_FBCON
+-   TOGGLE_MENU_ITEM(video_driver_linux_menu_framebuffer, (gfx_driver->id == GFX_FBCON));
++   TOGGLE_MENU_ITEM(video_driver_linux_menu_framebuffer, (menu_video_driver == GFX_FBCON));
+ #endif
+ #ifdef GFX_SVGALIB
+-   TOGGLE_MENU_ITEM(video_driver_linux_menu_svgalib,     (gfx_driver->id == GFX_SVGALIB));
++   TOGGLE_MENU_ITEM(video_driver_linux_menu_svgalib,     (menu_video_driver == GFX_SVGALIB));
+ #endif
+ 
+ #endif   /* ALLEGRO_LINUX */
+ 
+ #ifdef ALLEGRO_UNIX
+ 
+-   TOGGLE_MENU_ITEM(video_driver_unix_menu_x_windows,      (gfx_driver->id == GFX_XWINDOWS));
+-   TOGGLE_MENU_ITEM(video_driver_unix_menu_x_windows_full, (gfx_driver->id == GFX_XWINDOWS_FULLSCREEN));
+-   TOGGLE_MENU_ITEM(video_driver_unix_menu_x_dga,          (gfx_driver->id == GFX_XDGA));
+-   TOGGLE_MENU_ITEM(video_driver_unix_menu_x_dga_full,     (gfx_driver->id == GFX_XDGA_FULLSCREEN));
+-   TOGGLE_MENU_ITEM(video_driver_unix_menu_x_dga_2,        (gfx_driver->id == GFX_XDGA2));
++   TOGGLE_MENU_ITEM(video_driver_unix_menu_x_windows,      (menu_video_driver == GFX_XWINDOWS));
++   TOGGLE_MENU_ITEM(video_driver_unix_menu_x_windows_full, (menu_video_driver == GFX_XWINDOWS_FULLSCREEN));
++   TOGGLE_MENU_ITEM(video_driver_unix_menu_x_dga,          (menu_video_driver == GFX_XDGA));
++   TOGGLE_MENU_ITEM(video_driver_unix_menu_x_dga_full,     (menu_video_driver == GFX_XDGA_FULLSCREEN));
++   TOGGLE_MENU_ITEM(video_driver_unix_menu_x_dga_2,        (menu_video_driver == GFX_XDGA2));
+ 
+ #endif   /* ALLEGRO_UNIX */
+ 
+ #ifdef USE_ALLEGROGL
+ 
+-   TOGGLE_MENU_ITEM(video_driver_menu_opengl_full, (gfx_driver->id == GFX_OPENGL_FULLSCREEN));
+-   TOGGLE_MENU_ITEM(video_driver_menu_opengl_win,  (gfx_driver->id == GFX_OPENGL_WINDOWED));
++   TOGGLE_MENU_ITEM(video_driver_menu_opengl,      (menu_video_driver == GFX_OPENGL));
++   TOGGLE_MENU_ITEM(video_driver_menu_opengl_full, (menu_video_driver == GFX_OPENGL_FULLSCREEN));
++   TOGGLE_MENU_ITEM(video_driver_menu_opengl_win,  (menu_video_driver == GFX_OPENGL_WINDOWED));
+ 
+ #endif   /* USE_ALLEGROGL */
+ 
+--- fakenes-0.5.8/src/video.c.driver	2006-04-24 22:27:32.000000000 +0200
++++ fakenes-0.5.8/src/video.c	2006-08-11 22:29:11.000000000 +0200
+@@ -62,7 +62,13 @@
+ BOOL video_force_fullscreen = FALSE;
+ int video_cached_color_depth = 0;   /* Read only. */
+ 
+-int video_driver = 0;
++/* 2 versions of video driver "video_driver" contains the one actually used,
++   "menu_video_driver" contains the one configured by the user from the
++   menu, this can be different from the one actually used, because hot
++   switching between regular allegro drivers and alleggl drivers is not
++   supported. */
++static int video_driver = 0;
++int menu_video_driver = 0;
+ 
+ BITMAP *base_video_buffer = NULL;
+ BITMAP *video_buffer = NULL;
+@@ -139,6 +145,7 @@
+    int width, height;
+    int result;
+    const CHAR *font_file;
++   static BOOL firsttime = TRUE;
+ 
+    log_printf ("VIDEO: Entering video_init().");
+ 
+@@ -152,7 +159,15 @@
+ 
+    log_printf ("VIDEO: Loading configuration.");
+ 
+-   video_driver             = get_config_id  ("video", "driver",             video_driver);
++   /* only load the video driver once, after the first time the config setting
++      will reflect menu_video_driver, and we will want to continue using the
++      real thing. */
++   if (firsttime)
++   {
++      video_driver          = get_config_id  ("video", "driver",             video_driver);
++      menu_video_driver     = video_driver;
++      firsttime             = FALSE;
++   }
+    screen_width             = get_config_int ("video", "screen_width",       screen_width);
+    screen_height            = get_config_int ("video", "screen_height",      screen_height);
+    color_depth              = get_config_int ("video", "color_depth",        color_depth);
+@@ -576,7 +591,7 @@
+ 
+    log_printf ("VIDEO: Saving configuration.");
+ 
+-   set_config_id  ("video", "driver",             video_driver);
++   set_config_id  ("video", "driver",             menu_video_driver);
+    set_config_int ("video", "screen_width",       screen_width);
+    set_config_int ("video", "screen_height",      screen_height);
+    set_config_int ("video", "color_depth",        color_depth);
+@@ -1639,13 +1654,29 @@
+ void video_set_driver (int driver)
+ {
+     int old_driver;
++#ifdef USE_ALLEGROGL
++    BOOL driver_is_opengl = (driver == GFX_OPENGL) ||
++       (driver == GFX_OPENGL_FULLSCREEN) ||
++       (driver == GFX_OPENGL_WINDOWED);
++#endif
+ 
+-
+-    if (gfx_driver -> id == driver)
++    if (menu_video_driver == driver)
+     {
+         return;
+     }
+ 
++#ifdef USE_ALLEGROGL
++    if ((driver_is_opengl && !video_is_opengl_mode()) ||
++        (!driver_is_opengl && video_is_opengl_mode()))
++    {
++        gui_alert ("Notification",
++           "In order for the new driver",
++           "you've choisen to come into effect.",
++           "You must exit and restart fakenes.", "&OK", 0, 0, 0);
++        menu_video_driver = driver;
++        return;
++    }
++#endif   /* USE_ALLEGROGL */
+ 
+     old_driver = gfx_driver -> id;
+ 
+@@ -1673,6 +1704,11 @@
+     preserve_video_buffer = FALSE;
+ 
+     preserve_palette = FALSE;
++
++    if (video_driver == GFX_AUTODETECT)
++      menu_video_driver = GFX_AUTODETECT;
++    else
++      menu_video_driver = gfx_driver -> id;
+ }
+ 
+ 
+--- fakenes-0.5.8/src/include/video.h.driver	2006-04-24 02:54:48.000000000 +0200
++++ fakenes-0.5.8/src/include/video.h	2006-08-11 22:29:11.000000000 +0200
+@@ -49,7 +49,7 @@
+ BOOL video_force_fullscreen;
+ int video_cached_color_depth; /* Read only. */
+ 
+-int video_driver;
++int menu_video_driver;
+    
+ BITMAP *base_video_buffer;
+ BITMAP *video_buffer;
