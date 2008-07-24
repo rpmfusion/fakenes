@@ -1,6 +1,6 @@
 Name:           fakenes
 Version:        0.5.8
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Nintendo Entertainment System emulator
 Group:          Amusements/Games
 License:        Artistic
@@ -72,6 +72,9 @@ touch --no-create %{_datadir}/icons/hicolor || :
 
 
 %changelog
+* Thu Jul 24 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 0.5.8-6
+- Rebuild for buildsys cflags issue
+
 * Thu Jul 24 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 0.5.8-5
 - Release bump for rpmfusion
 
