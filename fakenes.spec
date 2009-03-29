@@ -1,6 +1,6 @@
 Name:           fakenes
 Version:        0.5.8
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Nintendo Entertainment System emulator
 Group:          Amusements/Games
 License:        Artistic
@@ -72,6 +72,9 @@ touch --no-create %{_datadir}/icons/hicolor || :
 
 
 %changelog
+* Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.5.8-7
+- rebuild for new F11 features
+
 * Thu Jul 24 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 0.5.8-6
 - Rebuild for buildsys cflags issue
 
