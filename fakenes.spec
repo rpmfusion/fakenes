@@ -1,6 +1,6 @@
 Name:           fakenes
 Version:        0.5.8
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Nintendo Entertainment System emulator
 Group:          Amusements/Games
 License:        Artistic
@@ -72,6 +72,9 @@ touch --no-create %{_datadir}/icons/hicolor || :
 
 
 %changelog
+* Sat Oct 10 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.5.8-8
+- rebuilt
+
 * Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.5.8-7
 - rebuild for new F11 features
 
