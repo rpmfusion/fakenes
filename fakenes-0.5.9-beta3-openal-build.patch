@@ -1,0 +1,12 @@
+diff -up fakenes-0.5.9-beta3/build/openal.cbd~ fakenes-0.5.9-beta3/build/openal.cbd
+--- fakenes-0.5.9-beta3/build/openal.cbd~	2007-06-14 12:29:07.000000000 +0200
++++ fakenes-0.5.9-beta3/build/openal.cbd	2009-10-25 11:07:36.000000000 +0100
+@@ -23,7 +23,7 @@ CFLAGS += ' -DUSE_OPENAL'
+ # --
+ 
+ do ifplat unix
+-   LDFLAGS += ' `openal-config --libs`'
++   LDFLAGS += ' `pkg-config openal --libs`'
+ else
+    LDFLAGS += ' -lOpenAL32'
+ done

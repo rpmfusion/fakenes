@@ -1,10 +1,12 @@
---- fakenes-0.5.8/src/gui.c.driver	2006-04-26 15:20:24.000000000 +0200
-+++ fakenes-0.5.8/src/gui.c	2006-08-11 22:30:57.000000000 +0200
-@@ -237,55 +237,58 @@
-    TOGGLE_MENU_ITEM(audio_channels_menu_extended_2,    dsp_get_channel_enabled (APU_CHANNEL_EXTRA_2));
-    TOGGLE_MENU_ITEM(audio_channels_menu_extended_3,    dsp_get_channel_enabled (APU_CHANNEL_EXTRA_3));
+diff -ur fakenes-0.5.9-beta3/src/gui.c fakenes-0.5.9-beta3.new/src/gui.c
+--- fakenes-0.5.9-beta3/src/gui.c	2007-06-25 18:43:10.000000000 +0200
++++ fakenes-0.5.9-beta3.new/src/gui.c	2009-10-25 10:38:18.000000000 +0100
+@@ -206,55 +206,59 @@
+    TOGGLE_MENU_ITEM(audio_output_buffer_menu_175ms,     (audio_options.buffer_length_ms_hint == 175));
+    TOGGLE_MENU_ITEM(audio_output_buffer_menu_200ms,     (audio_options.buffer_length_ms_hint == 200));
  
-+   TOGGLE_MENU_ITEM(video_driver_menu_automatic, (menu_video_driver == GFX_AUTODETECT));
++   TOGGLE_MENU_ITEM(video_driver_menu_safe,              (menu_video_driver == GFX_SAFE));
++   TOGGLE_MENU_ITEM(video_driver_menu_automatic,         (menu_video_driver == GFX_AUTODETECT));
 +
  #ifdef ALLEGRO_DOS
  
@@ -82,33 +84,79 @@
  
  #endif   /* USE_ALLEGROGL */
  
---- fakenes-0.5.8/src/video.c.driver	2006-04-24 22:27:32.000000000 +0200
-+++ fakenes-0.5.8/src/video.c	2006-08-11 22:29:11.000000000 +0200
-@@ -62,7 +62,13 @@
+@@ -2562,6 +2562,7 @@ static int video_menu_color (void)
+       return (D_CLOSE); \
+    }
+ 
++DRIVER_MENU_HANDLER(safe, GFX_SAFE)
+ DRIVER_MENU_HANDLER(automatic, GFX_AUTODETECT)
+ 
+ #ifdef ALLEGRO_DOS
+diff -ur fakenes-0.5.9-beta3/src/include/gui/menus.h fakenes-0.5.9-beta3.new/src/include/gui/menus.h
+--- fakenes-0.5.9-beta3/src/include/gui/menus.h	2007-06-19 10:20:26.000000000 +0200
++++ fakenes-0.5.9-beta3.new/src/include/gui/menus.h	2009-10-25 10:36:00.000000000 +0100
+@@ -582,6 +582,7 @@
+ 
+ #endif   /* !ALLEGRO_UNIX */
+ 
++DEFINE_MENU_CALLBACK(video_driver_menu_safe);
+ DEFINE_MENU_CALLBACK(video_driver_menu_automatic);
+ 
+ #ifdef USE_ALLEGROGL
+@@ -594,6 +595,7 @@
+ 
+ static const MENU video_driver_menu_base[] =
+ {
++   { "&Safe",        video_driver_menu_safe,        NULL,                                   0, NULL },
+    { "&Automatic",   video_driver_menu_automatic,   NULL,                                   0, NULL },
+    MENU_SPLITTER,
+ 
+diff -ur fakenes-0.5.9-beta3/src/include/video.h fakenes-0.5.9-beta3.new/src/include/video.h
+--- fakenes-0.5.9-beta3/src/include/video.h	2007-06-21 23:39:36.000000000 +0200
++++ fakenes-0.5.9-beta3.new/src/include/video.h	2009-10-25 10:31:20.000000000 +0100
+@@ -50,7 +50,7 @@
+ extern BOOL video_force_fullscreen;
+ extern int video_cached_color_depth; /* Read only. */
+ 
+-extern int video_driver;
++extern int menu_video_driver;
+    
+ extern BITMAP *base_video_buffer;
+ extern BITMAP *video_buffer;
+Only in fakenes-0.5.9-beta3.new/src/include: video.h~
+diff -ur fakenes-0.5.9-beta3/src/video.c fakenes-0.5.9-beta3.new/src/video.c
+--- fakenes-0.5.9-beta3/src/video.c	2007-06-21 23:39:36.000000000 +0200
++++ fakenes-0.5.9-beta3.new/src/video.c	2009-10-25 10:39:47.000000000 +0100
+@@ -62,14 +62,21 @@
  BOOL video_force_fullscreen = FALSE;
  int video_cached_color_depth = 0;   /* Read only. */
  
--int video_driver = 0;
 +/* 2 versions of video driver "video_driver" contains the one actually used,
-+   "menu_video_driver" contains the one configured by the user from the
-+   menu, this can be different from the one actually used, because hot
-+   switching between regular allegro drivers and alleggl drivers is not
-+   supported. */
-+static int video_driver = 0;
-+int menu_video_driver = 0;
++  "menu_video_driver" contains the one configured by the user from the
++  menu, this can be different from the one actually used, because hot
++  switching between regular allegro drivers and alleggl drivers is not
++  supported. */
+ #ifdef ALLEGRO_DOS
+ /* We use autodetect under DOS because I think the safe driver defaults to like 320x200 or something which is too small
+    for the new GUI even with the smallest font. */
+-int video_driver = GFX_AUTODETECT;
++static int video_driver = GFX_AUTODETECT;
++int menu_video_driver = GFX_AUTODETECT;
+ #else
+ /* Under Windowed operating systems, resolutions above or equal to 640x480 are always present and therefor we can go ahead
+    and use the safe driver for better compatibility without hampering the GUI at the same time. */
+-int video_driver = GFX_SAFE;
++static int video_driver = GFX_SAFE;
++int menu_video_driver = GFX_SAFE;
+ #endif
  
  BITMAP *base_video_buffer = NULL;
- BITMAP *video_buffer = NULL;
-@@ -139,6 +145,7 @@
-    int width, height;
-    int result;
-    const CHAR *font_file;
+@@ -143,9 +150,19 @@
+ 
+ void video_load_config (void)
+ {
 +   static BOOL firsttime = TRUE;
- 
-    log_printf ("VIDEO: Entering video_init().");
- 
-@@ -152,7 +159,15 @@
- 
++
     log_printf ("VIDEO: Loading configuration.");
  
 -   video_driver             = get_config_id  ("video", "driver",             video_driver);
@@ -124,8 +172,8 @@
     screen_width             = get_config_int ("video", "screen_width",       screen_width);
     screen_height            = get_config_int ("video", "screen_height",      screen_height);
     color_depth              = get_config_int ("video", "color_depth",        color_depth);
-@@ -576,7 +591,7 @@
- 
+@@ -169,7 +186,7 @@
+ {
     log_printf ("VIDEO: Saving configuration.");
  
 -   set_config_id  ("video", "driver",             video_driver);
@@ -133,7 +181,47 @@
     set_config_int ("video", "screen_width",       screen_width);
     set_config_int ("video", "screen_height",      screen_height);
     set_config_int ("video", "color_depth",        color_depth);
-@@ -1639,13 +1654,29 @@
+@@ -191,7 +208,7 @@
+ 
+ int video_init (void)
+ {
+-   int driver;
++   int driver = video_driver;
+    int width, height;
+    int result;
+    const CHAR *font_file;
+@@ -222,11 +239,13 @@
+       else
+          has_desktop = FALSE;
+ 
+-      /* We want to switch from the safe driver to an automatic driver when entering fullscreen modes. */
+-      if((video_driver == GFX_SAFE) && video_force_fullscreen)
+-         driver = GFX_AUTODETECT;
+-
+-      if(video_driver == GFX_AUTODETECT ) {
++      if(video_driver == GFX_SAFE) {
++         /* We want to switch from the safe driver to an automatic driver when entering fullscreen modes. */
++         if(video_force_fullscreen)
++            driver = GFX_AUTODETECT_FULLSCREEN;
++         else
++            driver = GFX_SAFE;
++      } else { /* video_driver == GFX_AUTODETECT */
+          /* Determine which automatic driver to use. */
+          if(video_force_fullscreen)
+             driver = GFX_AUTODETECT_FULLSCREEN;
+@@ -235,11 +254,7 @@
+          else
+             driver = GFX_AUTODETECT;
+       }
+-      else
+-         driver = video_driver;
+    }
+-   else
+-      driver = video_driver;
+ 
+ #ifdef USE_ALLEGROGL
+ 
+@@ -1644,13 +1659,29 @@
  void video_set_driver (int driver)
  {
      int old_driver;
@@ -165,26 +253,17 @@
  
      old_driver = gfx_driver -> id;
  
-@@ -1673,6 +1704,11 @@
+@@ -1678,6 +1709,13 @@
      preserve_video_buffer = FALSE;
  
      preserve_palette = FALSE;
 +
-+    if (video_driver == GFX_AUTODETECT)
-+      menu_video_driver = GFX_AUTODETECT;
++    if (video_driver == GFX_SAFE)
++        menu_video_driver = GFX_SAFE;
++    else if (video_driver == GFX_AUTODETECT)
++        menu_video_driver = GFX_AUTODETECT;
 +    else
-+      menu_video_driver = gfx_driver -> id;
++        menu_video_driver = gfx_driver -> id;
  }
  
  
---- fakenes-0.5.8/src/include/video.h.driver	2006-04-24 02:54:48.000000000 +0200
-+++ fakenes-0.5.8/src/include/video.h	2006-08-11 22:29:11.000000000 +0200
-@@ -49,7 +49,7 @@
- BOOL video_force_fullscreen;
- int video_cached_color_depth; /* Read only. */
- 
--int video_driver;
-+int menu_video_driver;
-    
- BITMAP *base_video_buffer;
- BITMAP *video_buffer;

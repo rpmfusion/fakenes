@@ -1,15 +1,18 @@
+%define beta beta3
+
 Name:           fakenes
-Version:        0.5.8
-Release:        9%{?dist}
+Version:        0.5.9
+Release:        0.1.%{beta}%{?dist}
 Summary:        Nintendo Entertainment System emulator
 Group:          Amusements/Games
 License:        Artistic
 URL:            http://fakenes.sourceforge.net/
-Source0:        http://dl.sf.net/sourceforge/%{name}/%{name}-%{version}.tar.bz2
+Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}-%{beta}.tar.gz
 Source1:        %{name}.desktop
 Patch0:         fakenes-0.5.8-menu-exit.patch
 Patch1:         fakenes-0.5.8-driver-switch.patch
-Patch2:         fakenes-0.5.8-alutinit.patch
+Patch2:         fakenes-0.5.9-beta3-gcc43.patch
+Patch3:         fakenes-0.5.9-beta3-openal-build.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  allegro-devel alleggl-devel zlib-devel openal-devel
 BuildRequires:  libGLU-devel freealut-devel desktop-file-utils
@@ -24,10 +27,11 @@ well.  There are also official builds available for Mac OS X.
 
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-%{beta}
 %patch0 -p1 -z .menu
 %patch1 -p1 -z .driver
-%patch2 -p1 -z .alutinit
+%patch2 -p1 -z .gcc43
+%patch3 -p1 -z .openal-build
 sed -i 's/\r//' docs/faq.html
 
 
@@ -72,6 +76,9 @@ touch --no-create %{_datadir}/icons/hicolor || :
 
 
 %changelog
+* Sun Oct 25 2009 Hans de Goede <j.w.r.degoede@hhs.nl> 0.5.9-0.1.beta3
+- New upstream release 0.5.9-beta3
+
 * Sat Oct 24 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.5.8-9
 - rebuild for new openal
 
