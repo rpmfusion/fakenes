@@ -2,7 +2,7 @@
 
 Name:           fakenes
 Version:        0.5.9
-Release:        0.1.%{beta}%{?dist}
+Release:        0.2.%{beta}%{?dist}
 Summary:        Nintendo Entertainment System emulator
 Group:          Amusements/Games
 License:        Artistic
@@ -76,6 +76,9 @@ touch --no-create %{_datadir}/icons/hicolor || :
 
 
 %changelog
+* Mon Oct 03 2011 Nicolas Chauvet <kwizart@gmail.com> - 0.5.9-0.2.beta3
+- Rebuilt for liballeg
+
 * Sun Oct 25 2009 Hans de Goede <j.w.r.degoede@hhs.nl> 0.5.9-0.1.beta3
 - New upstream release 0.5.9-beta3
 
