@@ -2,7 +2,7 @@
 
 Name:           fakenes
 Version:        0.5.9
-Release:        0.2.%{beta}%{?dist}
+Release:        0.3.%{beta}%{?dist}
 Summary:        Nintendo Entertainment System emulator
 Group:          Amusements/Games
 License:        Artistic
@@ -13,9 +13,11 @@ Patch0:         fakenes-0.5.8-menu-exit.patch
 Patch1:         fakenes-0.5.8-driver-switch.patch
 Patch2:         fakenes-0.5.9-beta3-gcc43.patch
 Patch3:         fakenes-0.5.9-beta3-openal-build.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Patch4:         fakenes-0.5.9-beta3-allegro44-build.patch
+Patch5:         fakenes-0.5.9-beta3-libm-build.patch
 BuildRequires:  allegro-devel alleggl-devel zlib-devel openal-devel
 BuildRequires:  libGLU-devel freealut-devel desktop-file-utils
+BuildRequires:  libicns-utils
 Requires:       hicolor-icon-theme
 
 %description
@@ -32,6 +34,8 @@ well.  There are also official builds available for Mac OS X.
 %patch1 -p1 -z .driver
 %patch2 -p1 -z .gcc43
 %patch3 -p1 -z .openal-build
+%patch4 -p1 -z .allegro44-build
+%patch5 -p1 -z .libm
 sed -i 's/\r//' docs/faq.html
 
 
@@ -39,43 +43,47 @@ sed -i 's/\r//' docs/faq.html
 export CFLAGS="$RPM_OPT_FLAGS -ffast-math"
 make cbuild
 ./cbuild --verbose
+icns2png -x build/mac/FakeNES.icns
+touch -r build/mac/FakeNES.icns FakeNES_128x128x32.png
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 install -D -m 755 %{name} $RPM_BUILD_ROOT%{_bindir}/%{name}
 # below is the desktop file and icon stuff.
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 desktop-file-install --vendor dribble           \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
   %{SOURCE1}
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/32x32/apps
-install -p -m 644 support/icon-32x32.png \
-  $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
-
-
-%clean
-rm -rf $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/128x128/apps
+install -p -m 644 FakeNES_128x128x32.png \
+  $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/128x128/apps/%{name}.png
 
 
 %post
-touch --no-create %{_datadir}/icons/hicolor || :
-%{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
 %postun
-touch --no-create %{_datadir}/icons/hicolor || :
-%{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+if [ $1 -eq 0 ] ; then
+    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+fi
+
+%posttrans
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %files
-%defattr(-, root, root)
 %doc docs/CHANGES docs/LICENSE docs/README docs/faq.html
 %{_bindir}/%{name}
 %{_datadir}/applications/dribble-%{name}.desktop
-%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
+%{_datadir}/icons/hicolor/128x128/apps/%{name}.png
 
 
 %changelog
+* Sat Dec 10 2011 Hans de Goede <j.w.r.degoede@hhs.nl> - 0.5.9-0.3.beta3
+- Fix building with allegro-4.4.x (rf#1969)
+- Fix the broken icon
+
 * Mon Oct 03 2011 Nicolas Chauvet <kwizart@gmail.com> - 0.5.9-0.2.beta3
 - Rebuilt for liballeg
 

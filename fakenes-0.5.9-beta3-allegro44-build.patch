@@ -1,0 +1,15 @@
+diff -up fakenes-0.5.9-beta3/build/alleggl.cbd~ fakenes-0.5.9-beta3/build/alleggl.cbd
+--- fakenes-0.5.9-beta3/build/alleggl.cbd~	2006-10-03 11:06:27.000000000 +0200
++++ fakenes-0.5.9-beta3/build/alleggl.cbd	2011-12-10 20:31:48.906063273 +0100
+@@ -22,9 +22,9 @@ CFLAGS += ' -DUSE_ALLEGROGL'
+ 
+ # --
+ 
+-LIBAGL = agl
++LIBAGL = alleggl
+ 
+-ifopt debug LIBAGL = 'agld'
++ifopt debug LIBAGL = 'alleggld'
+ 
+ AGL_LIBS = "-l${LIBAGL} "
+ 
