@@ -2,7 +2,7 @@
 
 Name:           fakenes
 Version:        0.5.9
-Release:        0.3.%{beta}%{?dist}
+Release:        0.4.%{beta}%{?dist}
 Summary:        Nintendo Entertainment System emulator
 Group:          Amusements/Games
 License:        Artistic
@@ -80,6 +80,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Fri Mar 02 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.5.9-0.4.beta3
+- Rebuilt for c++ ABI breakage
+
 * Sat Dec 10 2011 Hans de Goede <j.w.r.degoede@hhs.nl> - 0.5.9-0.3.beta3
 - Fix building with allegro-4.4.x (rf#1969)
 - Fix the broken icon
