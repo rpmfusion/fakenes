@@ -2,7 +2,7 @@
 
 Name:           fakenes
 Version:        0.5.9
-Release:        0.4.%{beta}%{?dist}
+Release:        0.5.%{beta}%{?dist}
 Summary:        Nintendo Entertainment System emulator
 Group:          Amusements/Games
 License:        Artistic
@@ -80,6 +80,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sun Mar 03 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.5.9-0.5.beta3
+- Mass rebuilt for Fedora 19 Features
+
 * Fri Mar 02 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.5.9-0.4.beta3
 - Rebuilt for c++ ABI breakage
 
