@@ -2,7 +2,7 @@
 
 Name:           fakenes
 Version:        0.5.9
-Release:        0.7.%{beta}%{?dist}
+Release:        0.8.%{beta}%{?dist}
 Summary:        Nintendo Entertainment System emulator
 Group:          Amusements/Games
 License:        Artistic
@@ -15,6 +15,7 @@ Patch2:         fakenes-0.5.9-beta3-gcc43.patch
 Patch3:         fakenes-0.5.9-beta3-openal-build.patch
 Patch4:         fakenes-0.5.9-beta3-allegro44-build.patch
 Patch5:         fakenes-0.5.9-beta3-libm-build.patch
+Patch6:         fakenes-0.5.9-beta3-gcc7.patch
 BuildRequires:  allegro-devel alleggl-devel zlib-devel openal-devel
 BuildRequires:  libGLU-devel freealut-devel desktop-file-utils
 BuildRequires:  libicns-utils
@@ -36,6 +37,7 @@ well.  There are also official builds available for Mac OS X.
 %patch3 -p1 -z .openal-build
 %patch4 -p1 -z .allegro44-build
 %patch5 -p1 -z .libm
+%patch6 -p1 -z .gcc7
 sed -i 's/\r//' docs/faq.html
 
 
@@ -80,6 +82,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sun Mar 19 2017 Leigh Scott <leigh123linux@googlemail.com> - 0.5.9-0.8.beta3
+- Fix build with gcc-7.x
+
 * Sun Mar 19 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 0.5.9-0.7.beta3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
