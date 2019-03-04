@@ -18,7 +18,7 @@ Patch5:         fakenes-0.5.9-beta3-libm-build.patch
 Patch6:         fakenes-0.5.9-beta3-gcc7.patch
 BuildRequires:  allegro-devel alleggl-devel zlib-devel openal-devel
 BuildRequires:  libGLU-devel freealut-devel desktop-file-utils
-BuildRequires:  libicns-utils gcc
+BuildRequires:  libicns-utils gcc-c++
 Requires:       hicolor-icon-theme
 
 %description
