@@ -2,7 +2,7 @@
 
 Name:           fakenes
 Version:        0.5.9
-Release:        0.13.%{beta}%{?dist}
+Release:        0.14.%{beta}%{?dist}
 Summary:        Nintendo Entertainment System emulator
 Group:          Amusements/Games
 License:        Artistic
@@ -82,6 +82,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Feb 04 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.5.9-0.14.beta3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Fri Aug 09 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.5.9-0.13.beta3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
