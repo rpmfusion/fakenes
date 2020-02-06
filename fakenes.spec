@@ -1,3 +1,4 @@
+%define _legacy_common_support 1
 %define beta beta3
 
 Name:           fakenes
